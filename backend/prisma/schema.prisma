@@ -134,5 +134,7 @@ model UsageEvents {
     user         User         @relation(fields: [userId], references: [id])
     chat         Chat?        @relation(fields: [chatId], references: [id], onDelete: SetNull)
 
-    @@index([userId, timestamp])
+@@index([userId, timestamp])
+@@index([messageId])
+@@index([apikeyId])
 }

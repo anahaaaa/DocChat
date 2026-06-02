@@ -348,6 +348,37 @@ export const getTopChatsByUsage = () =>
             name?: string | null;
         }>
     >("/usage/top-chats", { method: "GET" });
+export type UsageBreakdownItem = {
+    model: string;
+    provider: string | null;
+    totalInputTokens: number;
+    totalOutputTokens: number;
+    totalTokens: number;
+    requestCount: number;
+};
+
+export const getUsageBreakdown = (params?: {
+    from?: string;
+    to?: string;
+    page?: number;
+    limit?: number;
+}) => {
+    const query = new URLSearchParams(
+        Object.entries(params || {})
+            .filter(([_, v]) => v !== undefined)
+            .map(([k, v]) => [k, String(v)])
+    ).toString();
+
+    return apiRequest<{
+        data: UsageBreakdownItem[];
+        pagination: {
+            page: number;
+            limit: number;
+            total: number;
+            totalPages: number;
+        };
+    }>(`/usage/breakdown${query ? `?${query}` : ""}`, { method: "GET" });
+};
 
 export const toggleChatShare = (chatId: string) =>
     apiRequest<ChatItem>(`/chat/${chatId}/share`, { method: "POST" });
