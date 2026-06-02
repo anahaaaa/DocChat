@@ -58,6 +58,7 @@ import {
     exportChatMessages,
     toggleChatShare,
 } from "../lib/api";
+import { formatTokens } from "../lib/format";
 
 type CurrentLink = {
     title: string;
@@ -102,13 +103,6 @@ export const ChatPage = () => {
     const [isPageLoading, setIsPageLoading] = useState(true);
     const [isMessagesLoading, setIsMessagesLoading] = useState(true);
     const [error, setError] = useState("");
-
-    const formatTokens = (tokens: number) => {
-        if (tokens >= 1000000) return `${(tokens / 1000000).toFixed(1)}M`;
-        if (tokens >= 1000) return `${(tokens / 1000).toFixed(1)}k`;
-        return tokens.toString();
-    };
-
     // Layout configuration
     const [leftPanelOpen, setLeftPanelOpen] = useState(true);
     const [rightPanelOpen, setRightPanelOpen] = useState(false);
