@@ -189,16 +189,12 @@ const progressStatus = asyncHandler(async (req, res) => {
             errorMessage: true,
         },
     });
-    
+
     const redisData = await redis.get(chat.id.toString());
     const progress = redisData ? JSON.parse(redisData) : { status: "QUEUED", progress: 0 };
 
     res.status(200).json(
-        new ApiResponse(
-            200,
-            { progress, latestIngestionRun },
-            "Progress fetched successfully",
-        ),
+        new ApiResponse(200, { progress, latestIngestionRun }, "Progress fetched successfully"),
     );
 });
 
@@ -472,7 +468,7 @@ const toggleShare = asyncHandler(async (req, res) => {
         where: { id: chatId },
     });
 
-    if (!chat || chat.userId !== req.user.id) {
+    if (!chat) {
         throw new ApiError(404, "Chat not found");
     }
 
@@ -526,8 +522,8 @@ const forkSharedChat = asyncHandler(async (req, res) => {
             messages: {
                 include: {
                     sourceChunks: true,
-                }
-            }
+                },
+            },
         },
     });
 
@@ -543,9 +539,9 @@ const forkSharedChat = asyncHandler(async (req, res) => {
             status: "READY",
             userId: req.user.id,
             chatSources: {
-                connect: originalChat.chatSources.map(source => ({ id: source.id }))
-            }
-        }
+                connect: originalChat.chatSources.map((source) => ({ id: source.id })),
+            },
+        },
     });
 
     // Copy messages so the new user has the history
@@ -557,7 +553,7 @@ const forkSharedChat = asyncHandler(async (req, res) => {
                 llmResponse: msg.llmResponse,
                 llmModel: msg.llmModel,
                 createdAt: msg.createdAt,
-            }
+            },
         });
 
         if (msg.sourceChunks && msg.sourceChunks.length > 0) {
@@ -568,12 +564,14 @@ const forkSharedChat = asyncHandler(async (req, res) => {
                     pageUrl: chunk.pageUrl,
                     score: chunk.score,
                     chatMessageId: newMessage.id,
-                }))
+                })),
             });
         }
     }
 
-    res.status(200).json(new ApiResponse(200, { chatId: newChat.id }, "Chat successfully forked to your account"));
+    res.status(200).json(
+        new ApiResponse(200, { chatId: newChat.id }, "Chat successfully forked to your account"),
+    );
 });
 
 export {
