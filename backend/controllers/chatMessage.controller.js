@@ -312,8 +312,9 @@ const exportChatMessages = asyncHandler(async (req, res) => {
 
     res.write(header);
 
-    for (const msg of messages) {
-        const msgNumber = messages.indexOf(msg) + 1;
+   for (let i = 0; i < messages.length; i++) {
+        const msg = messages[i];
+        const msgNumber = i + 1;
 
         const userBlock = [
             "",
