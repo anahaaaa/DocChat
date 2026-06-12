@@ -389,6 +389,34 @@ const sendMessage = asyncHandler(async (req, res) => {
     }
 });
 
+const getChatMessages = asyncHandler(async (req, res) => {
+    const { chatId } = req.params;
+
+    const chat = await prisma.chat.findUnique({
+        where: { id: chatId },
+    });
+
+    if (!chat) {
+        throw new ApiError(404, "Chat not found.");
+    }
+
+    const messages = await prisma.chatMessage.findMany({
+        where: { chatId },
+        orderBy: { createdAt: "asc" },
+    });
+
+    if (!messages.length) {
+        return res
+            .status(200)
+            .json(new ApiResponse(200, { messages: [] }, "No messages found for this chat."));
+    }
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, { messages: messages }, "Chat messages retrieved successfully."));
+});
+
+
 // NOTE: No relation between ChatMessage and Chat in the current schema
 const exportChatMessages = asyncHandler(async (req, res) => {
     const { chatId } = req.params;

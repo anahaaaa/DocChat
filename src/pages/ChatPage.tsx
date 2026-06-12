@@ -134,6 +134,10 @@ export const ChatPage = () => {
     const [shareToken, setShareToken] = useState<string | null>(null);
     const [shareModalOpen, setShareModalOpen] = useState(false);
 
+    const handleShare = () => {
+        setShareModalOpen(true);
+    };
+
     const handleToggleShare = async () => {
         setIsSharing(true);
         try {
