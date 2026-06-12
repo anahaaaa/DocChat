@@ -90,6 +90,7 @@ export const userIdParamSchema = {
 
 export const expectationQuerySchema = {
     query: z.object({
+        docsUrls: z.array(url).min(1),
         docsUrl: url,
         isVectorLess: z
             .union([z.boolean(), z.string(), z.number()])
@@ -123,6 +124,7 @@ export const expectationQuerySchema = {
 export const createChatSchema = {
     body: z.object({
         name: z.string().trim().optional(),
+        docsUrls: z.array(url).min(1),
         docsUrl: url.optional(),
         docsUrls: z.array(url).min(1, "At least one documentation URL is required").optional(),
         isVectorLess: z

@@ -126,7 +126,7 @@ const expectation = asyncHandler(async (req, res) => {
         let totalBodyLengthOfCount = 0;
 
         for (const link of sampleLinks) {
-            const { body } = await scrapeWebpage(link, docsUrl);
+            const { body } = await scrapeWebpage(link, docsUrls);
             if (body) {
                 totalBodyLengthOfCount += body.length;
                 count++;

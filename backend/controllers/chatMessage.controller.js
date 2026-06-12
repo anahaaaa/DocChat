@@ -149,82 +149,38 @@ const sendMessage = asyncHandler(async (req, res) => {
         });
     }
 
-    const vectorSources = chat.chatSources.filter((source) => !source.isVectorLess && source.collectionName);
-    const vectorlessSources = chat.chatSources.filter((source) => source.isVectorLess && source.documentTree);
+   let relevantSources = [];
+let relevantNodes = [];
+let relevantNodeIds = [];
 
-    let relevantSources = [];
-    let relevantNodes = [];
-    let relevantNodeIds = [];
+if (!chat.chatSources[0].isVectorLess) {
+    const userPromptEmbeddings = await generateVectorEmbeddings(userPrompt);
 
-    if (vectorSources.length > 0) {
-        const userPromptEmbeddings = await generateVectorEmbeddings(userPrompt);
-        const sourceQueries = await Promise.all(
-            vectorSources.map((source) =>
-                qdrant.query(source.collectionName, {
-                    query: userPromptEmbeddings,
-                    limit: 5,
-                    with_payload: true,
-                    score_threshold: 0.35,
-                }).catch(() => ({ points: [] })),
-            ),
-        );
-        relevantSources = sourceQueries.flatMap((result) => result.points || []);
-    }
+    let allPoints = [];
 
-    if (vectorlessSources.length > 0) {
-        for (const source of vectorlessSources) {
-            const docTree = source.documentTree;
-            treeindex.loadData(docTree.sourceData);
-            treeindex.loadTree(docTree.treeData);
+    for (const source of chat.chatSources) {
+        if (!source.collectionName) continue;
 
-            const nodeIds = await treeindex.retrieveRelevantNodes(userPrompt);
-            if (nodeIds.length === 0) continue;
+        const results = await qdrant.query(source.collectionName, {
+            query: userPromptEmbeddings,
+            limit: 5,
+            with_payload: true,
+            score_threshold: 0.35,
+        });
 
-            const nodes = treeindex.findNodes(nodeIds);
-            relevantNodeIds.push(...nodeIds);
-            relevantNodes.push(...nodes);
+        if (results?.points?.length) {
+            allPoints.push(...results.points);
         }
     }
 
-    if (!relevantSources.length && !relevantNodes.length) {
-        res.write("No relevant sources found, for this query");
-        res.end();
-        return;
-        
-        const rawNodes = treeindex.findNodes(relevantNodeIds);
-        const pages = await prisma.documentPage.findMany({
-            where: { chatSourceId: { in: chat.chatSources.map((s) => s.id) } },
-        });
+    allPoints.sort((a, b) => b.score - a.score);
 
-        relevantNodes = rawNodes.map((node, index) => {
-            const nodeId = node.id || relevantNodeIds[index] || `idx-${index}`;
-            let matchedPage = null;
-            if (node.stringSubset && node.stringSubset.length === 2) {
-                const [start, end] = node.stringSubset;
-                matchedPage = pages.find((p) => {
-                    if (p.startIndex === null || p.endIndex === null) return false;
-                    return start >= p.startIndex && start < p.endIndex;
-                });
-                if (!matchedPage) {
-                    matchedPage = pages.find((p) => {
-                        if (p.startIndex === null || p.endIndex === null) return false;
-                        return start < p.endIndex && end > p.startIndex;
-                    });
-                }
-            }
-
-            const pageUrl = matchedPage
-                ? matchedPage.pageUrl
-                : (chat.chatSources[0]?.documentationUrl || `vectorless://node/${nodeId}`);
-            const heading = matchedPage
-                ? matchedPage.heading
-                : (node.title || "Vectorless Source");
-
-            return {
-                ...node,
-                pageUrl,
-                heading,
-            };
+    relevantSources = {
+        points: allPoints.slice(0, 5),
+    };
+} else {
+        const docTree = await prisma.documentTree.findUnique({
+            where: { id: chat.collectionName },
         });
     }
 
