@@ -12,11 +12,11 @@ For detailed documentation, please refer to the files in the `docs/` folder:
 
 | Guide | Description |
 | :--- | :--- |
-| 🏗️ [Architecture Guide](file:///c:/Users/Rushabh%20Mahajan/Documents/GitHub/DocChat/docs/architecture.md) | In-depth pipeline sequences, database details, and Mermaid workflows. |
-| ⚙️ [Backend Guide](file:///c:/Users/Rushabh%20Mahajan/Documents/GitHub/DocChat/docs/backend-guide.md) | Folder layout, database schemas, BullMQ queuing, and encryption details. |
-| 🎨 [Frontend Guide](file:///c:/Users/Rushabh%20Mahajan/Documents/GitHub/DocChat/docs/frontend-guide.md) | Vite/Tailwind v4 layouts, routing, caching layers, and styling principles. |
-| 🔌 [API Reference](file:///c:/Users/Rushabh%20Mahajan/Documents/GitHub/DocChat/docs/api-guide.md) | Complete endpoints map, parameters, JSON shapes, and auth requirements. |
-| 🛠️ [Setup & Troubleshooting](file:///c:/Users/Rushabh%20Mahajan/Documents/GitHub/DocChat/docs/troubleshooting.md) | Detailed listing of 25+ env variables, local Redis/pg configurations, and debug steps. |
+| 🏗️ [Architecture Guide](https://github.com/avishek0769/DocChat/blob/main/docs/architecture.md) | In-depth pipeline sequences, database details, and Mermaid workflows. |
+| ⚙️ [Backend Guide](https://github.com/avishek0769/DocChat/blob/main/docs/backend-guide.md) | Folder layout, database schemas, BullMQ queuing, and encryption details. |
+| 🎨 [Frontend Guide](https://github.com/avishek0769/DocChat/blob/main/docs/frontend-guide.md) | Vite/Tailwind v4 layouts, routing, caching layers, and styling principles. |
+| 🔌 [API Reference](https://github.com/avishek0769/DocChat/blob/main/docs/api-guide.md) | Complete endpoints map, parameters, JSON shapes, and auth requirements. |
+| 🛠️ [Setup & Troubleshooting](https://github.com/avishek0769/DocChat/blob/main/docs/troubleshooting.md) | Detailed listing of 25+ env variables, local Redis/pg configurations, and debug steps. |
 
 ---
 
@@ -140,7 +140,7 @@ node chatWorker.js
 
 ## Contributing
 
-Contributions are welcome! If you would like to help improve DocChat, please review our [Contributing Guide](file:///c:/Users/Rushabh%20Mahajan/Documents/GitHub/DocChat/CONTRIBUTING.md) to understand branch naming, PR checklist procedures, and codebase guidelines.
+Contributions are welcome! If you would like to help improve DocChat, please review our [Contributing Guide](https://github.com/avishek0769/DocChat/blob/main/CONTRIBUTING.md) to understand branch naming, PR checklist procedures, and codebase guidelines.
 
 ---
 
