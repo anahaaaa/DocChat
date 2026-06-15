@@ -1,15 +1,6 @@
 import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
-import Dashboard from "./pages/Dashboard";
-import AllChats from "./pages/AllChats";
-import Settings from "./pages/Settings";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
-import Profile from "./pages/Profile";
-import { ChatPage } from "./pages/ChatPage";
-import { SharedChatPage } from "./pages/SharedChatPage";
-import { Usage } from "./pages/Usage";
 import Sandbox from "./pages/Sandbox";
 import { ProtectedRoute, PublicOnlyRoute } from "./components/ProtectedRoute";
 import { isAuthenticated } from "./lib/auth";

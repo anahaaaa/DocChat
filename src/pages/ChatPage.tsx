@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sidebar } from "../components/Sidebar";
 import Skeleton from "../components/Skeleton";
+import { ThemeToggle } from "../components/ThemeToggle";
 
 export interface Source {
     id: string;
@@ -877,6 +878,7 @@ export const ChatPage = () => {
                                 <Search className="w-4 h-4" />
                                 <span className="hidden sm:inline">Sources</span>
                             </button>
+                            <ThemeToggle />
                         </div>
                     </header>
 
