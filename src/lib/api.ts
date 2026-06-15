@@ -223,10 +223,20 @@ export const updateApiKey = async (id: string, payload: { key?: string; name?: s
 
 export const getApiKeyCount = () => apiRequest<{ count: number }>("/apikey/count", { method: "GET" });
 
-export const getChats = () =>
-    withCache(cacheKey("/chat/list"), 5 * 60 * 1000, () =>
-        apiRequest<ChatItem[]>("/chat/list", { method: "GET" }),
-    );
+export type PaginatedChats = {
+    chats: ChatItem[];
+    hasMore: boolean;
+    nextCursor: string | null;
+};
+
+export const getChats = (params?: { limit?: number; cursor?: string }) => {
+    const query = new URLSearchParams();
+    if (params?.limit) query.set("limit", String(params.limit));
+    if (params?.cursor) query.set("cursor", params.cursor);
+    const qs = query.toString();
+    const path = `/chat/list${qs ? `?${qs}` : ""}`;
+    return apiRequest<PaginatedChats>(path, { method: "GET" });
+};
 
 export const getRecentFailedIngestionRuns = (limit = 5) =>
     apiRequest<{ runs: FailedIngestionRunItem[] }>(

@@ -287,6 +287,21 @@ export const tokensByGroupSchema = {
     }),
 };
 
+export const listChatsQuerySchema = {
+    query: z.object({
+        limit: z
+            .union([z.string(), z.number()])
+            .optional()
+            .transform((v) => {
+                if (v === undefined || v === null) return 25;
+                const parsed = Number(v);
+                if (!Number.isFinite(parsed)) return 25;
+                return Math.min(Math.max(Math.floor(parsed), 1), 100);
+            }),
+        cursor: z.string().optional(),
+    }),
+};
+
 export const paginationSchema = {
     query: z.object({
         page: z.coerce.number().int().min(1).default(1),

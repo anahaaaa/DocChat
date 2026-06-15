@@ -10,6 +10,7 @@ import {
     chatIdParamSchema,
     bulkDeleteChatsSchema,
     qdrantCleanupSchema,
+    listChatsQuerySchema,
 } from "../utils/validationSchemas.js";
 import {
     cancelProcessing,
@@ -54,7 +55,7 @@ chatRouter
     .route("/status/stream/:chatId")
     .get(verifyStrictJWT, validate(chatIdParamSchema), streamChatStatus);
 chatRouter.route("/ingestion-runs/failed").get(verifyStrictJWT, recentFailedIngestionRuns);
-chatRouter.route("/list").get(verifyStrictJWT, listAllChats);
+chatRouter.route("/list").get(verifyStrictJWT, validate(listChatsQuerySchema), listAllChats);
 chatRouter.route("/recent").get(verifyStrictJWT, recentChats);
 chatRouter.route("/chunk-preview").post(verifyStrictJWT, chunkPreview);
 
