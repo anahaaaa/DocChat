@@ -12,6 +12,8 @@ import {
     userDetails,
     usage,
     ingestion,
+    impersonate,
+    stopImpersonation,
     getSettings,
     updateSettings,
     testWebhook,
@@ -26,6 +28,8 @@ adminRouter.route("/users").get(validate(paginationSchema), users);
 adminRouter.route("/users/:userId").get(validate(userIdParamSchema), userDetails);
 adminRouter.route("/usage").get(validate(rangeSchema), validate(paginationSchema), usage);
 adminRouter.route("/ingestion").get(validate(rangeSchema), validate(paginationSchema), ingestion);
+adminRouter.route("/impersonate/:userId").post(validate(userIdParamSchema), impersonate);
+adminRouter.route("/stop-impersonation").post(stopImpersonation);
 adminRouter.route("/settings").get(getSettings).put(updateSettings);
 adminRouter.route("/settings/test-webhook").post(testWebhook);
 
