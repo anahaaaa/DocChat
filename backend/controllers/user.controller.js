@@ -147,6 +147,16 @@ const userRegister = asyncHandler(async (req, res) => {
         throw new ApiError(400, "User not verified");
     }
 
+    // Check if the username is already taken by a different account
+    const takenUsername = await prisma.user.findUnique({
+        where: { username },
+    });
+
+    // If a user with this username exists and it's not the current registering user, reject
+    if (takenUsername && takenUsername.email !== email) {
+        throw new ApiError(409, "Username is already taken");
+    }
+
     const hashedPassword = await hashPassword(password);
 
     const user = await prisma.user.update({
