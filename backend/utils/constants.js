@@ -105,3 +105,55 @@ export function estimateUsageCostUsd({ provider, model, inputTokens = 0, outputT
 const parsedDailyTokenBudget = Number(process.env.DAILY_TOKEN_BUDGET);
 export const DAILY_TOKEN_BUDGET =
     Number.isFinite(parsedDailyTokenBudget) && parsedDailyTokenBudget > 0 ? parsedDailyTokenBudget : null;
+
+// Login rate limit
+const parsedLoginRateLimitMax = Number(process.env.LOGIN_RATE_LIMIT_MAX);
+export const LOGIN_RATE_LIMIT_MAX =
+    Number.isFinite(parsedLoginRateLimitMax) && parsedLoginRateLimitMax > 0
+        ? parsedLoginRateLimitMax
+        : 5;
+
+const parsedLoginRateLimitWindowMs = Number(process.env.LOGIN_RATE_LIMIT_WINDOW_MS);
+export const LOGIN_RATE_LIMIT_WINDOW_MS =
+    Number.isFinite(parsedLoginRateLimitWindowMs) && parsedLoginRateLimitWindowMs > 0
+        ? parsedLoginRateLimitWindowMs
+        : 15 * 60 * 1000; // 15 minutes
+
+// Verification code rate limit
+const parsedVerificationRateLimitMax = Number(process.env.VERIFICATION_RATE_LIMIT_MAX);
+export const VERIFICATION_RATE_LIMIT_MAX =
+    Number.isFinite(parsedVerificationRateLimitMax) && parsedVerificationRateLimitMax > 0
+        ? parsedVerificationRateLimitMax
+        : 3;
+
+const parsedVerificationRateLimitWindowMs = Number(process.env.VERIFICATION_RATE_LIMIT_WINDOW_MS);
+export const VERIFICATION_RATE_LIMIT_WINDOW_MS =
+    Number.isFinite(parsedVerificationRateLimitWindowMs) && parsedVerificationRateLimitWindowMs > 0
+        ? parsedVerificationRateLimitWindowMs
+        : 15 * 60 * 1000; // 15 minutes
+
+// Message rate limit
+const parsedMessageRateLimitMax = Number(process.env.MESSAGE_RATE_LIMIT_MAX);
+export const MESSAGE_RATE_LIMIT_MAX =
+    Number.isFinite(parsedMessageRateLimitMax) && parsedMessageRateLimitMax > 0
+        ? parsedMessageRateLimitMax
+        : 30;
+
+const parsedMessageRateLimitWindowMs = Number(process.env.MESSAGE_RATE_LIMIT_WINDOW_MS);
+export const MESSAGE_RATE_LIMIT_WINDOW_MS =
+    Number.isFinite(parsedMessageRateLimitWindowMs) && parsedMessageRateLimitWindowMs > 0
+        ? parsedMessageRateLimitWindowMs
+        : 60 * 1000; // 1 minute
+
+// Chat creation rate limit
+const parsedChatCreateRateLimitMax = Number(process.env.CHAT_CREATE_RATE_LIMIT_MAX);
+export const CHAT_CREATE_RATE_LIMIT_MAX =
+    Number.isFinite(parsedChatCreateRateLimitMax) && parsedChatCreateRateLimitMax > 0
+        ? parsedChatCreateRateLimitMax
+        : 5;
+
+const parsedChatCreateRateLimitWindowMs = Number(process.env.CHAT_CREATE_RATE_LIMIT_WINDOW_MS);
+export const CHAT_CREATE_RATE_LIMIT_WINDOW_MS =
+    Number.isFinite(parsedChatCreateRateLimitWindowMs) && parsedChatCreateRateLimitWindowMs > 0
+        ? parsedChatCreateRateLimitWindowMs
+        : 60 * 60 * 1000; // 1 hour

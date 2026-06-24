@@ -2,6 +2,7 @@ import { Router } from "express";
 import { verifyStrictJWT } from "../middlewares/auth.middleware.js";
 import validate from "../middlewares/validate.middleware.js";
 import { verifyChatOwnership } from "../middlewares/chat.middleware.js";
+import { chatCreationLimiter } from "../middlewares/rateLimit.middleware.js"
 import {
     expectationQuerySchema,
     createChatSchema,
@@ -36,7 +37,7 @@ import {
 const chatRouter = Router();
 
 chatRouter.route("/expectation").get(verifyStrictJWT, validate(expectationQuerySchema), expectation);
-chatRouter.route("/create").post(verifyStrictJWT, validate(createChatSchema), createChat);
+chatRouter.route("/create").post(verifyStrictJWT, chatCreationLimiter, validate(createChatSchema), createChat);
 chatRouter
     .route("/:chatId/sources")
     .post(verifyStrictJWT, validate(chatIdParamSchema), validate(addChatSourceSchema), verifyChatOwnership, addChatSource)

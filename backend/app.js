@@ -13,6 +13,8 @@ import {
 
 const app = express();
 
+app.set("trust proxy", 1);
+
 app.use((req, res, next) => {
   req.id = req.headers["x-request-id"] || uuidv4();
   res.setHeader("x-request-id", req.id);

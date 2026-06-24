@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { verifyJWT, verifyStrictJWT } from "../middlewares/auth.middleware.js";
 import validate from "../middlewares/validate.middleware.js";
+import { verificationCodeLimiter, loginLimiter } from "../middlewares/rateLimit.middleware.js"
 import {
     sendVerificationCodeSchema,
     verifyEmailSchema,
@@ -24,10 +25,10 @@ import {
 
 const userRouter = Router();
 
-userRouter.route("/send-verification-code").post(validate(sendVerificationCodeSchema), sendVerificationCode);
+userRouter.route("/send-verification-code").post(verificationCodeLimiter, validate(sendVerificationCodeSchema), sendVerificationCode);
 userRouter.route("/verify-email").post(validate(verifyEmailSchema), verifyEmail);
 userRouter.route("/register").post(validate(userRegisterSchema), userRegister);
-userRouter.route("/login").post(validate(userLogInSchema), userLogIn);
+userRouter.route("/login").post(loginLimiter, validate(userLogInSchema), userLogIn);
 userRouter.route("/logout").get(verifyStrictJWT, userLogOut);
 userRouter.route("/refresh-tokens").patch(verifyJWT, refreshTokens);
 userRouter.route("/profile").get(verifyStrictJWT, currentUserProfile);

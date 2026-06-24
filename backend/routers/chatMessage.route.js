@@ -2,6 +2,7 @@ import { Router } from "express";
 import { verifyStrictJWT } from "../middlewares/auth.middleware.js";
 import validate from "../middlewares/validate.middleware.js";
 import { verifyChatOwnership } from "../middlewares/chat.middleware.js";
+import {messageLimiter} from "../middlewares/rateLimit.middleware.js"
 import {
     sendMessageSchema,
     chatIdParamSchema,
@@ -23,7 +24,7 @@ const chatMessageRouter = Router();
 chatMessageRouter.route("/models").get(verifyStrictJWT, getAvailableModels);
 chatMessageRouter
     .route("/send")
-    .post(verifyStrictJWT, validate(sendMessageSchema), verifyChatOwnership, sendMessage);
+    .post(verifyStrictJWT, messageLimiter, validate(sendMessageSchema), verifyChatOwnership, sendMessage);
 chatMessageRouter
     .route("/all/:chatId")
     .get(verifyStrictJWT, validate(chatIdParamSchema, chatMessagesQuerySchema), verifyChatOwnership, getChatMessages);
